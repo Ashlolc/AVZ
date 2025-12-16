@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Avz</title>
+  <meta name="theme-color" content="#1a0f0b" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header id="hudTop">
+      <div class="hudLeft">
+        <div class="stat">
+          <div class="label">Energy</div>
+          <div id="energyVal" class="value">0</div>
+          <div id="energyRegen" class="sub">+0.0/s</div>
+        </div>
+        <div class="stat">
+          <div class="label">Core</div>
+          <div id="livesVal" class="value">❤❤❤</div>
+          <div id="levelVal" class="sub">Lv 1</div>
+        </div>
+      </div>
+
+      <div class="hudMid">
+        <div class="waveRow">
+          <div id="waveLabel" class="waveLabel">Build Phase</div>
+          <div class="chips">
+            <button id="btnSpeed" class="chip" title="Game speed">1×</button>
+            <button id="btnMute" class="chip" title="Mute/Unmute">🔊</button>
+          </div>
+        </div>
+        <div class="progressWrap" aria-label="Wave progress">
+          <div id="waveProg" class="progressBar"></div>
+        </div>
+        <div id="msg" class="msg"></div>
+
+        <div id="spiceRow" class="spiceRow hidden">
+          <div class="mods">
+            <div class="modsLabel">Modifiers</div>
+            <div id="modChips" class="modChips"></div>
+          </div>
+
+          <div class="abilities">
+            <button id="abPulse" class="chip ability" title="Damage all invaders (spice mode)">Core Pulse</button>
+            <button id="abSlow" class="chip ability" title="Slow all invaders (spice mode)">Time Dilation</button>
+            <button id="abSurge" class="chip ability" title="Instant Energy (spice mode)">Energy Surge</button>
+          </div>
+
+          <div class="combo">
+            <div class="comboLabel">Combo <span id="comboVal">0</span></div>
+            <div class="comboWrap"><div id="comboBar" class="comboBar"></div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="hudRight">
+        <button id="btnStartWave" class="btn primary">Start</button>
+        <button id="btnAuto" class="btn" title="Auto-start next wave">Auto: Off</button>
+        <button id="btnPause" class="btn">Pause</button>
+        <button id="btnRestart" class="btn danger">Restart</button>
+      </div>
+    </header>
+
+    <main id="gameWrap">
+      <canvas id="game" width="960" height="540"></canvas>
+
+      <footer id="hudBottom">
+        <div class="rowTop">
+          <div class="title">Defenders</div>
+          <div class="tools">
+            <button id="btnShop" class="toolBtn" title="Open/close the shop">Shop: Open</button>
+            <button id="btnCancel" class="toolBtn hidden" title="Cancel selection">Cancel</button>
+            <button id="btnRecycle" class="toolBtn" title="Recycle/remove a defender (refund some Energy)">Recycle: Off</button>
+          </div>
+        </div>
+        <div id="shopBody" class="shopBody">
+          <div id="cards" class="cards"></div>
+          <div id="selectedHint" class="hint">Pick a defender, then tap/click a tile to place.</div>
+        </div>
+      </footer>
+
+      <div id="overlay" class="overlay hidden">
+        <div class="panel">
+          <div id="overlayTitle" class="title">Title</div>
+          <div id="overlayText" class="text">Text</div>
+          <div class="row">
+            <button id="overlayBtn1" class="btn primary">OK</button>
+            <button id="overlayBtn2" class="btn">Close</button>
+          </div>
+        </div>
+      
+      <div id="mainMenu" class="overlay">
+        <div class="panel wide menuPanel">
+          <div class="menuTitle">Avz</div>
+          <div class="menuSub">Choose your device + mode. You can change these later.</div>
+
+          <div class="menuGrid">
+            <div class="menuCard">
+              <div class="menuCardTitle">Device</div>
+              <div class="menuRow">
+                <button id="btnDevicePC" class="btn">PC / Laptop</button>
+                <button id="btnDeviceMobile" class="btn">Mobile / Tablet</button>
+              </div>
+              <div class="small">This changes button size, shop behavior, and touch controls.</div>
+            </div>
+
+            <div class="menuCard">
+              <div class="menuCardTitle">Mode</div>
+              <div class="menuRow">
+                <button id="btnModeClassic" class="btn">Classic</button>
+                <button id="btnModeSpice" class="btn primary">Gameplay Spice</button>
+              </div>
+              <div class="small">Gameplay Spice = abilities + combo rewards + random wave modifiers.</div>
+            </div>
+          </div>
+
+          <div class="menuFooter">
+            <button id="btnMenuStart" class="btn primary">Start Game</button>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="tutorial" class="overlay hidden">
+        <div class="panel wide">
+          <div class="title">Avz — quick tutorial</div>
+          <div class="text">
+            <ul>
+              <li><b>Build Phase:</b> place defenders on the 5×9 grid.</li>
+              <li><b>Wave Phase:</b> invaders march in from the right.</li>
+              <li>Tap a card → tap a tile to place. Use <b>Cancel</b> (or ESC/right‑click) to stop placing.</li>
+              <li><b>Recycle</b> lets you remove placed defenders for a partial refund.</li>
+              <li>New defenders unlock as your <b>Level</b> rises (endless).</li>
+              <li>If invaders cross the red core line, you lose a heart. Lose 3 = defeat.</li>
+            </ul>
+            <div class="small">Mobile tip: if audio is muted, tap once anywhere to enable sound.</div>
+          </div>
+          <div class="row">
+            <button id="btnTutOk" class="btn primary">Play</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="utils.js"></script>
+  <script src="audio.js"></script>
+  <script src="levels.js"></script>
+  <script src="entities.js"></script>
+  <script src="game.js"></script>
+  <script src="ui.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
